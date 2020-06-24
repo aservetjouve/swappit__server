@@ -51,6 +51,8 @@ router.post("/signup", (req, res) => {
 			})
 				.then((user) => {
 					user.passwordHash = "***";
+					req.session.currentUser = user
+					
 					res.status(200).json(user);
 				})
 				.catch((err) => {
@@ -100,7 +102,7 @@ router.post("/signin", (req, res) => {
 					if (doesItMatch) {
 						// req.session is the special object that is available to you
 						userData.passwordHash = "***";
-						req.session.loggedInUser = userData;
+						req.session.currentUser = userData;
 						console.log("Signin", req.session);
 						res.status(200).json(userData);
 					}
@@ -135,7 +137,7 @@ router.post("/logout", (req, res) => {
 });
 
 router.get("/user", isLoggedIn, (req, res, next) => {
-	res.status(200).json(req.session.loggedInUser);
+	res.status(200).json(req.session.currentUser);
 });
 
 module.exports = router;

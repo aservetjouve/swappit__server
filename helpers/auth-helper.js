@@ -1,5 +1,5 @@
 const isLoggedIn = (req, res, next) => {
-	if (req.session.loggedInUser) next();
+	if (req.session.currentUser) next();
 	else {
 		res.status(401).json({
 			message: "Unauthorized user",
@@ -9,5 +9,5 @@ const isLoggedIn = (req, res, next) => {
 };
 
 module.exports = {
-	isLoggedIn,
+	isLoggedIn
 };
