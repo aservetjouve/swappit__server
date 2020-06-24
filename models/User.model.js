@@ -11,7 +11,7 @@ const userSchema = new Schema(
       required: [true, 'Please enter your last name']
     },
     location: {
-      type: string,
+      type: String,
       required: [true, 'Please enter your location']
     },
     email: {
