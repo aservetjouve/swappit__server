@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const mongoose = require("mongoose");
 require("dotenv").config();
 
 /*Ensure that the database is connected
@@ -12,6 +13,8 @@ require('./config/database.config')
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 
+/* Cors middleware setup
+======================*/
 const cors = require("cors");
 app.use(
 	cors({
@@ -20,11 +23,12 @@ app.use(
 	})
 );
 
-
+/* Session middleware
+===================*/
 let MONGODB_URI = process.env.MONGODB_URI
 app.use(
 	session({
-		secret: "my-secret-weapon",
+		secret: process.env.SESSION_SECRET,
 		saveUninitialized: true,
 		resave: true,
 		cookie: {
@@ -32,10 +36,10 @@ app.use(
       maxAge: 60 * 60 * 24 * 1000
 		},
 		store: new MongoStore({
-			url: MONGODB_URI,
-			ttl: 60 * 60 * 24,
-			autoRemove: "disabled",
-		}),
+      mongooseConnection: mongoose.connection,
+      /*1 Day*/
+      ttl: 24 * 60 * 60
+    }),
 	})
 );
 
@@ -44,24 +48,28 @@ app.use(
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.static(path.join(__dirname, 'public')));
 
 /* Parse cookie and store them in req
 ===================================*/
 const cookieParser = require('cookie-parser');
 app.use(cookieParser());
 
-app.use(express.static(path.join(__dirname, 'public')));
+
 
 /* Routes
 =======*/
 const authRoutes = require('./routes/auth.routes')
 app.use('/auth', authRoutes);
 
+const itemRoutes = require('./routes/item.routes')
+app.use('/item', itemRoutes)
+
 /* No route match
 ===============*/
-app.use((req, res, next) => {
-  res.sendFile(__dirname+'/public/404.html')
-})
+// app.use((req, res, next) => {
+//   res.sendFile(__dirname+'/public/404.html')
+// })
 
 /*App Listenning
 ==============*/
