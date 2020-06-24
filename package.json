@@ -1,0 +1,37 @@
+{
+  "name": "swappit__server",
+  "version": "1.0.0",
+  "description": "Swappit is a application that allows you to swapp pieces of decoration or furniture with an other user. Swapping is the best way to change your interior without spending anything while reducing waste and helping our amazing planet.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "server": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aservetjouve/swappit__server.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aservetjouve/swappit__server/issues"
+  },
+  "homepage": "https://github.com/aservetjouve/swappit__server#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "connect-mongo": "^3.2.0",
+    "cookie-parser": "^1.4.5",
+    "cors": "^2.8.5",
+    "debug": "^4.1.1",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "mongoose": "^5.9.20",
+    "morgan": "^1.10.0",
+    "node": "^14.4.0",
+    "nodemon": "^2.0.4",
+    "path": "^0.12.7"
+  }
+}
