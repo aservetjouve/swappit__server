@@ -65,6 +65,9 @@ app.use('/auth', authRoutes);
 const itemRoutes = require('./routes/item.routes')
 app.use('/item', itemRoutes)
 
+const transactionRoutes = require ('./routes/transaction.routes')
+app.use('/transaction', transactionRoutes)
+
 /* No route match
 ===============*/
 // app.use((req, res, next) => {

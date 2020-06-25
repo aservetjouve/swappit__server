@@ -18,6 +18,7 @@ const transactionSchema = new Schema({
 		ref: "Item",
 	},
 	oneUserAgreed: Boolean,
+	//change transaction done 
 });
 
 module.exports = model("Transaction", transactionSchema);
