@@ -7,6 +7,28 @@ const ItemModel = require("../models/Item.model");
 /* Check if the user is logged in*/
 const { isLoggedIn } = require("../helpers/auth-helper");
 
+router.get("/done/:id", (req, res) => {
+	let user = req.params.id;
+	console.log(user);
+	ItemModel.find({
+		owner: user,
+	}).then((result) => {
+		let { _id } = result[0];
+		console.log("object is ", _id);
+		TransactionModel.find({
+			$or: [
+				{ itemUserA: _id },
+				{ itemUserB: _id },
+			],
+			itMatches: true,
+		}).then((result) => {
+			console.log("transaction is ", result);
+
+			res.status(200).json(result);
+		});
+	});
+});
+
 router.post("/:myItem/:otherItem", isLoggedIn, (req, res) => {
 	let itemUserA = req.params.myItem;
 	let itemUserB = req.params.otherItem;

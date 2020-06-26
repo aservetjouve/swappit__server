@@ -25,7 +25,6 @@ app.use(
 
 /* Session middleware
 ===================*/
-let MONGODB_URI = process.env.MONGODB_URI
 app.use(
 	session({
 		secret: process.env.SESSION_SECRET,
@@ -70,9 +69,9 @@ app.use('/transaction', transactionRoutes)
 
 /* No route match
 ===============*/
-// app.use((req, res, next) => {
-//   res.sendFile(__dirname+'/public/404.html')
-// })
+app.use((req, res) => {
+  res.sendFile(__dirname+'/public/404.html')
+})
 
 /*App Listenning
 ==============*/

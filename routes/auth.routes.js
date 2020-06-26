@@ -140,4 +140,9 @@ router.get("/user", isLoggedIn, (req, res, next) => {
 	res.status(200).json(req.session.currentUser);
 });
 
+router.get("/otheruser/:id", (req, res) => {
+	UserModel.findById(req.params.id)
+		.then((response) => {res.status(200).json(response);})
+})
+
 module.exports = router;

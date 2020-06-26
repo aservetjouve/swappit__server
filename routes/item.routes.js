@@ -6,10 +6,13 @@ const ItemModel = require('../models/Item.model');
 /* Check if the user is logged in*/
 const { isLoggedIn } = require("../helpers/auth-helper");
 
-router.get("/", (req, res) => {
-	ItemModel.find()
+router.get("/:ownerId", (req, res) => {
+	let owner = req.params.ownerId
+	console.log(owner)
+	ItemModel.find({owner: owner})
 		.then((item) => {
-			res.status(200).json(item);
+			console.log(item)
+			res.status(200).json(item)
 		})
 		.catch((err) => {
 			res.status(500).json({
@@ -41,7 +44,7 @@ router.post("/add", isLoggedIn, (req, res) => {
 		});
 });
 
-router.get("/:id", isLoggedIn, (req, res) => {
+router.get("/search/:id", (req, res) => {
 	ItemModel.findById(req.params.id)
 		.then((response) => {
 			res.status(200).json(response);
