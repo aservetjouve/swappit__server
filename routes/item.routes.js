@@ -81,7 +81,7 @@ router.patch("/:id", isLoggedIn, (req, res) => {
 			name: name,
 			type: type,
 			aspect: aspect,
-			swappableWith: aspect,
+			swappableWith: swappableWith,
 		},
 	})
 		.then((response) => {
