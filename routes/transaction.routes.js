@@ -10,12 +10,10 @@ const { isLoggedIn } = require("../helpers/auth-helper");
 
 router.get("/done/:id", (req, res) => {
 	let user = req.params.id;
-	console.log(user);
 	ItemModel.find({
 		owner: user,
 	}).then((result) => {
 		let { _id } = result[0];
-		console.log("object is ", _id);
 		TransactionModel.find({
 			$or: [
 				{ itemUserA: _id },
@@ -23,8 +21,6 @@ router.get("/done/:id", (req, res) => {
 			],
 			itMatches: true,
 		}).then((result) => {
-			console.log("transaction is ", result);
-
 			res.status(200).json(result);
 		});
 	});
@@ -32,7 +28,6 @@ router.get("/done/:id", (req, res) => {
 
 router.get('/init/:userId', (req, res) => {
 	let activeUser = req.params.userId;
-	console.log('Active user is', activeUser)
 	ItemModel.find({
 		owner: activeUser
 	}).then((result) => {
@@ -41,9 +36,7 @@ router.get('/init/:userId', (req, res) => {
 	UserModel.find({
 		_id: activeUser
 	}).then((result) => {
-		let {location} = result[0]
-		console.log('Location is ', location)
-		
+		let {location} = result[0]	
 		UserModel.find({
 			location: location,
 			_id: { $ne: activeUser }
@@ -63,6 +56,7 @@ router.get('/init/:userId', (req, res) => {
 							{ 
 								itemUserA:result[0]._id,
 								itemUserB: _id,
+								itMatches: true
 							},
 						]
 					}).then((result)=> {
@@ -75,7 +69,6 @@ router.get('/init/:userId', (req, res) => {
 			}
 			setTimeout(()=>{
 				res.status(200).json(searchResult);
-				console.log(searchResult)
 			},1000)
 		})
 	})

@@ -8,10 +8,8 @@ const { isLoggedIn } = require("../helpers/auth-helper");
 
 router.get("/:ownerId", (req, res) => {
 	let owner = req.params.ownerId
-	console.log(owner)
 	ItemModel.find({owner: owner})
 		.then((item) => {
-			console.log(item)
 			res.status(200).json(item)
 		})
 		.catch((err) => {
@@ -24,7 +22,6 @@ router.get("/:ownerId", (req, res) => {
 
 router.post("/add", isLoggedIn, (req, res) => {
     const { name, type, aspect, swappableWith} = req.body;
-    console.log(req.session.currentUser)
     const owner = req.session.currentUser._id
 	ItemModel.create({
 		name: name,
@@ -88,7 +85,6 @@ router.patch("/:id", isLoggedIn, (req, res) => {
 			res.status(200).json(response);
 		})
 		.catch((err) => {
-			console.log(err);
 			res.status(500).json({
 				error: "Something went wrong",
 				message: err,

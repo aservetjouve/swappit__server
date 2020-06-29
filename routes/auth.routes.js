@@ -103,7 +103,6 @@ router.post("/signin", (req, res) => {
 						// req.session is the special object that is available to you
 						userData.passwordHash = "***";
 						req.session.currentUser = userData;
-						console.log("Signin", req.session);
 						res.status(200).json(userData);
 					}
 					//if passwords do not match
