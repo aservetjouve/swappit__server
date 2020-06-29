@@ -3,6 +3,7 @@ const router = express.Router();
 
 const TransactionModel = require("../models/Transaction.model");
 const ItemModel = require("../models/Item.model");
+const UserModel = require('../models/User.model')
 
 /* Check if the user is logged in*/
 const { isLoggedIn } = require("../helpers/auth-helper");
@@ -29,7 +30,59 @@ router.get("/done/:id", (req, res) => {
 	});
 });
 
-router.post("/:myItem/:otherItem", isLoggedIn, (req, res) => {
+router.get('/init/:userId', (req, res) => {
+	let activeUser = req.params.userId;
+	console.log('Active user is', activeUser)
+	ItemModel.find({
+		owner: activeUser
+	}).then((result) => {
+		let {_id} = result[0]
+
+	UserModel.find({
+		_id: activeUser
+	}).then((result) => {
+		let {location} = result[0]
+		console.log('Location is ', location)
+		
+		UserModel.find({
+			location: location,
+			_id: { $ne: activeUser }
+		}).then((result)=> {
+			let searchResult = [];
+			for (i=0; i<result.length; i++){
+				ItemModel.find({
+					owner: result[i]._id
+				}).then((result) => {
+					let objectToMatch = result
+					TransactionModel.find({
+						$or: [
+							{ 
+								itemUserA: _id,
+								itemUserB: result[0]._id
+							},
+							{ 
+								itemUserA:result[0]._id,
+								itemUserB: _id,
+							},
+						]
+					}).then((result)=> {
+						if (!result.length){
+							searchResult.push(objectToMatch)
+						}
+					})
+					
+				})
+			}
+			setTimeout(()=>{
+				res.status(200).json(searchResult);
+				console.log(searchResult)
+			},1000)
+		})
+	})
+})
+})
+
+router.post("/:myItem/:otherItem", (req, res) => {
 	let itemUserA = req.params.myItem;
 	let itemUserB = req.params.otherItem;
 	TransactionModel.find({
@@ -71,5 +124,7 @@ router.post("/:myItem/:otherItem", isLoggedIn, (req, res) => {
 		}
 	});
 });
+
+
 
 module.exports = router;
