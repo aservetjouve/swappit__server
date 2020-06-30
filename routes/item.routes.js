@@ -21,14 +21,15 @@ router.get("/:ownerId", (req, res) => {
 });
 
 router.post("/add", isLoggedIn, (req, res) => {
-    const { name, type, aspect, swappableWith} = req.body;
+    const { name, type, aspect, swappableWith, image} = req.body;
     const owner = req.session.currentUser._id
 	ItemModel.create({
 		name: name,
         type: type,
         aspect: aspect, 
         swappableWith: swappableWith,
-        owner: owner
+		owner: owner,
+		image: image
 	})
 		.then((response) => {
 			res.status(200).json(response);
@@ -72,13 +73,14 @@ router.delete("/:id", isLoggedIn, (req, res) => {
 
 router.patch("/:id", isLoggedIn, (req, res) => {
 	let id = req.params.id;
-	const { name, type, aspect, swappableWith } = req.body;
+	const { name, type, aspect, swappableWith, image } = req.body;
 	ItemModel.findByIdAndUpdate(id, {
 		$set: {
 			name: name,
 			type: type,
 			aspect: aspect,
 			swappableWith: swappableWith,
+			image: image
 		},
 	})
 		.then((response) => {

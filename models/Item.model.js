@@ -21,6 +21,7 @@ const itemSchema = new Schema({
 		type: Schema.Types.ObjectId,
 		ref: "User",
 	},
+	image: String
 });
 
 module.exports = model("Item", itemSchema);

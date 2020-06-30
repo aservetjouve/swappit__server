@@ -67,6 +67,9 @@ app.use('/item', itemRoutes)
 const transactionRoutes = require ('./routes/transaction.routes')
 app.use('/transaction', transactionRoutes)
 
+const fileUploads = require('./routes/file-upload.routes')
+app.use('/upload', fileUploads)
+
 /* No route match
 ===============*/
 app.use((req, res) => {
